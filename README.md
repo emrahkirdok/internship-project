@@ -14,3 +14,14 @@ This readme is for the internship project.
 - results
 
 
+## Tools to be used
+
+### Gargammel
+
+This [site](https://grenaud.github.io/gargammel/).
+
+### Mapdamage2
+
+This [site](https://ginolhac.github.io/mapDamage/).
+
+
