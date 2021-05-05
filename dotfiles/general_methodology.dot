@@ -1,0 +1,12 @@
+digraph g{
+
+    reference -> fragSim -> modernDNA -> deamSim -> ancientDNA;
+
+    "deamination model\nmapDamage2" -> deamSim;
+
+    {modernDNA; ancientDNA} -> "prepare sets" -> {trainingData; validationData};
+
+     trainingData -> "random forest" -> "random forest\nmodel";
+
+     validationData -> "random forest\nmodel" -> "truth table";
+    }
