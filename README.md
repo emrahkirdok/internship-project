@@ -27,4 +27,6 @@ This [site](https://ginolhac.github.io/mapDamage/).
 
 ## Steps
 
+### Downloding gargammel and mapDamage2
+
 
