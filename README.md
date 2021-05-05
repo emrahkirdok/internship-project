@@ -27,6 +27,8 @@ This [site](https://ginolhac.github.io/mapDamage/).
 
 ## Steps
 
-### Downloding gargammel and mapDamage2
+### gargammel and mapDamage2 are downloaded 
+
+### modern.fasta file is created by using gargammel- fragSim to create 
 
 
