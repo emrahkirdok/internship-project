@@ -20,6 +20,9 @@ Authentication of ancient DNA reads can be done using alignment based methods. H
 
 In this project, we would like to tackle this problem via usint the frequency difference of *k*-length nucleotide substrings (*k*-mers) between modern and ancient DNA sequences.
 
+![The overview of the methodology in this project](dotfiles/general_methodology.png)
+
+
 # Material and Methods
 
 ## Tools
