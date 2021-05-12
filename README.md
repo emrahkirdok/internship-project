@@ -52,21 +52,55 @@ This [site](https://ginolhac.github.io/mapDamage/).
 
 ## Steps
 
-•	fragSim -n 100000 -l 100 /mnt/c/YAGMUR/staj/sequence.fasta  > modern.fasta   #creating DNA fragments of e.coli to be simulated by deamSim
+Download reference genome:
 
-•	python3.8 k-mer.py –f modern.fasta –k 3 –o kmerthree.kmer  #using pyhton code to divide the DNA simulated by fragSim to k-mers of 3 
+```
+cd data
+./download_reference_genome.sh
 
-•	deamSim -mapdamage misincorporation.txt double modern.fasta -b ancient.bam
+```
 
-•	bwa index sequence.fasta  # indexing the referance genome in order to have faster access 
+Simulate modern DNA dataset:
 
-•	bwa mem sequence.fasta ancient.fasta | samtools view -Sb > antik.bam  #aligning the ancient DNA sequence to referance genome using bwa and turning the output file from sam o into bam file
+```
+samtools faidx data/GCF_000005845.2_ASM584v2_genomic.fna
 
-•	samtools sort antik.bam > antik.sorted.bam
+fragSim -n 100000 -l 100 data/GCF_000005845.2_ASM584v2_genomic.fna  > modern.fasta   #creating DNA fragments of e.coli to be simulated by deamSim
 
-•	samtools index antik.sorted.bam
+```
 
-•	mapDamage -i antik.sorted.bam -r sequence.fasta
+Apply ancient DNA damage to simulated dataset:
+
+``` 
+deamSim -mapdamage ~/Src/gargammel/examplesMapDamage/results_LaBrana/misincorporation.txt double data/modern.fasta > data/ancient.fasta
+
+```
+
+Confirm ancient DNA damage:
+
+1. index reference genome
+2. align DNA sequence to reference genome
+3. use mapDamge2 to calculate deamination rates
+
+``` 
+bwa data/GCF_000005845.2_ASM584v2_genomic.fna
+bwa mem data/GCF_000005845.2_ASM584v2_genomic.fna data/ancient.fasta | samtools view -Sb > data/ancient.bam
+
+
+```
+
+python3.8 k-mer.py –f modern.fasta –k 3 –o kmerthree.kmer  #using pyhton code to divide the DNA simulated by fragSim to k-mers of 3 
+
+
+bwa index sequence.fasta  # indexing the referance genome in order to have faster access 
+
+bwa mem sequence.fasta ancient.fasta | samtools view -Sb > antik.bam  #aligning the ancient DNA sequence to referance genome using bwa and turning the output file from sam o into bam file
+
+samtools sort antik.bam > antik.sorted.bam
+
+samtools index antik.sorted.bam
+
+mapDamage -i antik.sorted.bam -r sequence.fasta
 
 
 
