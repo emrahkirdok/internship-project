@@ -52,6 +52,24 @@ This [site](https://ginolhac.github.io/mapDamage/).
 
 ## Steps
 
+•	fragSim -n 100000 -l 100 /mnt/c/YAGMUR/staj/sequence.fasta  > modern.fasta   #creating DNA fragments of e.coli to be simulated by deamSim
+
+•	python3.8 k-mer.py –f modern.fasta –k 3 –o kmerthree.kmer  #using pyhton code to divide the DNA simulated by fragSim to k-mers of 3 
+
+•	deamSim -mapdamage misincorporation.txt double modern.fasta -b ancient.bam
+
+•	bwa index sequence.fasta  # indexing the referance genome in order to have faster access 
+
+•	bwa mem sequence.fasta ancient.fasta | samtools view -Sb > antik.bam  #aligning the ancient DNA sequence to referance genome using bwa and turning the output file from sam o into bam file
+
+•	samtools sort antik.bam > antik.sorted.bam
+
+•	samtools index antik.sorted.bam
+
+•	mapDamage -i antik.sorted.bam -r sequence.fasta
+
+
+
 
 
 
