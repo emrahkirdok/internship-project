@@ -86,24 +86,15 @@ Confirm ancient DNA damage:
 bwa data/GCF_000005845.2_ASM584v2_genomic.fna
 bwa mem data/GCF_000005845.2_ASM584v2_genomic.fna data/ancient.fasta | samtools view -Sb > data/ancient.bam
 
+samtools sort data/ancient.bam > data/ancient.sorted.bam
+
+samtools index data/ancient.sorted.bam
+
+mapDamage -i ancient.sorted.bam -r data/GCF_000005845.2_ASM584v2_genomic.fna
+
 
 ```
 
 python3.8 k-mer.py –f modern.fasta –k 3 –o kmerthree.kmer  #using pyhton code to divide the DNA simulated by fragSim to k-mers of 3 
-
-
-bwa index sequence.fasta  # indexing the referance genome in order to have faster access 
-
-bwa mem sequence.fasta ancient.fasta | samtools view -Sb > antik.bam  #aligning the ancient DNA sequence to referance genome using bwa and turning the output file from sam o into bam file
-
-samtools sort antik.bam > antik.sorted.bam
-
-samtools index antik.sorted.bam
-
-mapDamage -i antik.sorted.bam -r sequence.fasta
-
-
-
-
 
 
