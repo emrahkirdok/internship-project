@@ -1,0 +1,17 @@
+digraph g {
+    
+    reference -> fragSim -> "modern-fasta" -> deamSim -> "ancient-fasta";
+
+    "deamination nodel" -> deamSim;
+
+    {"ancient-fasta"; reference} -> alignment -> bam -> mapDamage -> "misincorporation plot"
+    
+    reference -> mapDamage;
+
+    "modern-fasta" -> kmerize -> "modern-kmer";
+
+    "ancient-fasta" -> kmerize -> "ancient-kmer";
+
+    {"modern-kmer"; "ancient-kmer"} -> "final-kmer\ndataset" -> "randomForest-model"
+
+    }
