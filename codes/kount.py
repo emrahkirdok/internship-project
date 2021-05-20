@@ -2,14 +2,16 @@
 
 import argparse, gzip, sys
 import numpy as np
+import itertools
 
 #global definitions
 transition={"A":0, "a":0, "C":1,"c":1, "G":2,"g":2,"T":3,"t":3}
 
 def parse_function():
-    parser=argparse.ArgumentParser(description="Calculates k-mer frequencies from a given fasta file(s).")
+    parser=argparse.ArgumentParser(description="Calculates k-mer frequency from a given fasta file(s).")
     parser.add_argument('-f', '--file', dest="infile", type =str, help="fasta file for the sequences (left empty to read from stdin)")
     parser.add_argument("-k", "--k-mer", dest="kmer", type=int, help="kmer")
+    parser.add_argument("-l", "--label", dest="label", type=int, help="label")
     parser.add_argument("-o", "--out-file",dest="outfile",type=str,help="name of the resulting file")
 
     args=parser.parse_args()
@@ -22,15 +24,16 @@ def parse_function():
     return(args)            #return the args
 
 def init_kmer_array(kmer):
-    print("Creating k-mer array")
+    #print("Creating k-mer array")
     nk=4**kmer
     kmer_array=np.zeros(nk)
     return(kmer_array)
 
-def kount_kmer(id,seq,kmer_array,k):
-    print("Profiling", id, "with", len(seq),"nucleotides.")
+def kount_kmer(seq,kmer_array,k,label):
+    #print("Profiling", id, "with", len(seq),"nucleotides.")
     n=0
-
+    kmer_array.fill(0)
+    #print(kmer_array)
     while n < len(seq)-k+1:
         f=int(0)
         r=int(0)
@@ -49,16 +52,21 @@ def kount_kmer(id,seq,kmer_array,k):
             kmer_array[f]+=1
             kmer_array[r]+=1
             n=n+1
-    return(kmer_array)
+    return(np.append(label,kmer_array/sum(kmer_array)))
 
 def main():
-
     args=parse_function()
     infile=args.infile
     kmer=args.kmer
+    label=args.label
     outfile=args.outfile
 
     kmer_array=init_kmer_array(kmer)
+    bases=["A","T","G","C"]
+    a=[''.join(p) for p in itertools.product(bases, repeat=kmer)]
+    output=open(outfile,'w')
+    print(*a, file = output, sep=":", end = "\n")
+    output.close()
 
     try:
         extension=infile[-2:]
@@ -69,15 +77,15 @@ def main():
             seq_file=open(infile, 'r')
     except:
         seq_file=open("/dev/stdin","r")
-    print(seq_file)
+    #print(seq_file)
 
     line=seq_file.readline()
-    print(line)
+    #print(line)
     if line[0]!=">":
         print("Not a fasta file")
         exit()
     output=open(outfile,'w')
-    print("%K-MER:",kmer,file=output,sep="", end="\n")
+    #print("%K-MER:",kmer,file=output,sep="", end="\n")
 
     while line!='':
 
@@ -89,12 +97,16 @@ def main():
             seq=seq+line
             line=seq_file.readline().rstrip("\n")
         if line=="":
-            kount_kmer(id,seq,kmer_array,kmer)
-            kmer_array.tofile(output,sep=":",format="%s")
+            #kmer_array=init_kmer_array(kmer)
+            array_k=kount_kmer(seq,kmer_array,kmer,label)
+            array_k.tofile(output,sep=":",format="%s")
+            print(file=output)
             break
         if line[0]==">":
-            kount_kmer(id,seq,kmer_array,kmer)
-            kmer_array.tofile(output,sep=":",format="%s")
+            #kmer_array=init_kmer_array(kmer)
+            array_k=kount_kmer(seq,kmer_array,kmer,label)
+            array_k.tofile(output,sep=":",format="%s")
+            print(file=output)
 
     output.close()
 
