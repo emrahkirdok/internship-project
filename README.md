@@ -54,6 +54,8 @@ This [site](https://ginolhac.github.io/mapDamage/).
 
 ### Installation of Gargammel
 
+Create and install the required environment for Gargammel:
+
 ```
 conda env
 conda create --name gargammel
@@ -62,6 +64,8 @@ conda install -c bioconda gargammel
 
 ```
 ### Packages That We Need to Install in Order to Use Mapdamage2
+
+Install the R packages required to be able to use Mapdamage2:
 
 ```
 conda install r-inline
