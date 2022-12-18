@@ -50,6 +50,28 @@ We will use this tool to simulate modern and ancient DNA sequences. It is possib
 
 This [site](https://ginolhac.github.io/mapDamage/).
 
+## Preparing the Environment
+
+### Installation of Gargammel
+
+```
+conda env
+conda create --name gargammel
+conda activate gargammel
+conda install -c bioconda gargammel
+
+```
+### Packages That We Need to Install in Order to Use Mapdamage2
+
+```
+conda install r-inline
+conda install r-gam
+conda install r-Rcpp
+conda install r-RcppGLS
+conda install r-RcppGSL
+conda install r-ggplot2
+
+```
 ## Steps
 
 Download reference genome:
