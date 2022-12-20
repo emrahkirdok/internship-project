@@ -50,13 +50,36 @@ We will use this tool to simulate modern and ancient DNA sequences. It is possib
 
 This [site](https://ginolhac.github.io/mapDamage/).
 
+## Preparing the Environment
+
+### Installation of Gargammel
+
+Create and install the required environment for Gargammel:
+
+```
+conda env
+conda create --name gargammel
+conda activate gargammel
+conda install -c bioconda gargammel
+
+```
+### Packages That We Need to Install in Order to Use Mapdamage2
+
+Install the R packages required to be able to use Mapdamage2:
+
+```
+conda install r-inline r-gam r-Rcpp r-RcppGLS r-RcppGSL r-ggplot2
+
+```
 ## Steps
 
 Download reference genome:
 
 ```
-cd data
-./download_reference_genome.sh
+conda activate gargammel
+cd data/
+sh download_reference_genome.sh
+cd ..
 
 ```
 
@@ -65,14 +88,14 @@ Simulate modern DNA dataset:
 ```
 samtools faidx data/GCF_000005845.2_ASM584v2_genomic.fna
 
-fragSim -n 100000 -l 100 data/GCF_000005845.2_ASM584v2_genomic.fna  > modern.fasta   #creating DNA fragments of e.coli to be simulated by deamSim
+fragSim -n 100000 -l 100 data/GCF_000005845.2_ASM584v2_genomic.fna  > data/modern.fasta   #creating DNA fragments of e.coli to be simulated by deamSim
 
 ```
 
 Apply ancient DNA damage to simulated dataset:
 
 ``` 
-deamSim -mapdamage ~/Src/gargammel/examplesMapDamage/results_LaBrana/misincorporation.txt double data/modern.fasta > data/ancient.fasta
+deamSim -mapdamage ~/gargammel/examplesMapDamage/results_LaBrana/misincorporation.txt double data/modern.fasta > data/ancient.fasta
 
 ```
 
@@ -83,14 +106,14 @@ Confirm ancient DNA damage:
 3. use mapDamge2 to calculate deamination rates
 
 ``` 
-bwa data/GCF_000005845.2_ASM584v2_genomic.fna
+bwa index data/GCF_000005845.2_ASM584v2_genomic.fna
 bwa mem data/GCF_000005845.2_ASM584v2_genomic.fna data/ancient.fasta | samtools view -Sb > data/ancient.bam
 
 samtools sort data/ancient.bam > data/ancient.sorted.bam
 
 samtools index data/ancient.sorted.bam
 
-mapDamage -i ancient.sorted.bam -r data/GCF_000005845.2_ASM584v2_genomic.fna
+mapDamage -i data/ancient.sorted.bam -r data/GCF_000005845.2_ASM584v2_genomic.fna
 
 
 ```
