@@ -68,12 +68,7 @@ conda install -c bioconda gargammel
 Install the R packages required to be able to use Mapdamage2:
 
 ```
-conda install r-inline
-conda install r-gam
-conda install r-Rcpp
-conda install r-RcppGLS
-conda install r-RcppGSL
-conda install r-ggplot2
+conda install r-inline r-gam r-Rcpp r-RcppGLS r-RcppGSL r-ggplot2
 
 ```
 ## Steps
